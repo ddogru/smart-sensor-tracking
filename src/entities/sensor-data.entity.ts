@@ -1,19 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne } from 'typeorm';
+import { Base } from './base';
+import { Sensor } from './sensor.entity';
 
 @Entity('sensor_data')
-export class SensorData {
+export class SensorData extends Base {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  sensorId: string;
+  @ManyToOne(() => Sensor, (sensor) => sensor.sensorData, { nullable: false })
+  @JoinColumn({ name: 'sensorId' })
+  sensor: Sensor;
 
   @Column()
   timestamp: Date;
 
-  @Column()
+  @Column('float')
   temperature: number;
 
-  @Column()
+  @Column('float')
   humidity: number;
+  
+  
 }

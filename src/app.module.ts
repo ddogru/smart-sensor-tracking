@@ -2,18 +2,32 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './admin/auth/auth.module';
-import { UsersModule } from './admin/users/users.module';
-import { CompaniesModule } from './admin/companies/companies.module';
-import { SensorsModule } from './main/sensors/sensors.module';
-import { LogsModule } from './main/logs/logs.module';
+import { UserModule } from './admin/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import { allEntities } from './entities/entities';
+import { ConfigModule } from '@nestjs/config';
+import { MqttModule } from './services/mqtt.module';
+import { SystemAdminModule } from './admin/system-admin/system-admin.module';
+import { CompanyAdminModule } from './admin/company-admin/company-admin.module';
+import { ThrottlerModule } from '@nestjs/throttler'; // Import ThrottlerModule
+import { MqttService } from './services/mqtt.service';
+
 dotenv.config();
 
 @Module({
   imports: [
-    // Database configuration using environment variables
+    ConfigModule.forRoot({ isGlobal: true }),
+
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 5,
+        },
+      ],
+    }),
+    
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -22,16 +36,15 @@ dotenv.config();
       password: process.env.POSTGRES_PASSWORD,
       entities: allEntities,
       database: process.env.POSTGRES_DATABASE,
-      synchronize: true,  // Automatically synchronize the database schema
-      autoLoadEntities: true,  // Auto load entities
+      synchronize: true,  
+      autoLoadEntities: true, 
     }),
 
-    // Your modules
     AuthModule, 
-    UsersModule, 
-    CompaniesModule, 
-    SensorsModule, 
-    LogsModule,
+    UserModule, 
+    MqttModule,
+    SystemAdminModule, 
+    CompanyAdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

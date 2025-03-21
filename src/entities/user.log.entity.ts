@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
 
 @Entity('user_log')
@@ -6,12 +6,13 @@ export class UserLog {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, (user) => user.id)
-  user: User;
+  @ManyToOne(() => User, (user) => user.userLogs, { onDelete: 'CASCADE' }) 
+  @JoinColumn({ name: 'userId' })  
+  user: User; 
 
   @Column('varchar')
-  action: string; // action like 'viewed_logs'
+  action: string; 
 
-  @Column('timestamp')
+  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' }) 
   timestamp: Date; 
 }
