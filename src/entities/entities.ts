@@ -1,4 +1,3 @@
-// src/entities/entities.ts
 import { Company } from './company.entity';
 import { InvalidSensorDataLog } from './invalid-sensor-data-log.entity';
 import { Role } from './role.entity';

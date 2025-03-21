@@ -19,7 +19,7 @@ export class RolesGuard implements CanActivate {
 
     console.log('RolesGuard triggered');  
 
-    if (!requiredRoles) return true; // If no roles required, allow access.
+    if (!requiredRoles) return true; 
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
@@ -28,20 +28,18 @@ export class RolesGuard implements CanActivate {
 
     if (!user) throw new ForbiddenException('User not authenticated');
 
-    // Fetch user from DB to get their role
     const userWithRole = await this.userRepository.findOne({
       where: { id: user.userId },
-      relations: ['role'], // Ensure role is included
+      relations: ['role'], 
     });
 
     if (!userWithRole || !userWithRole.role) {
       throw new ForbiddenException('User role not found');
     }
 
-    const userRole = userWithRole.role.name; // Get the single role name
+    const userRole = userWithRole.role.name; 
     console.log('User role:', userRole);
 
-    // Check if user's role matches any of the required roles
     if (!requiredRoles.includes(userRole)) {
       throw new ForbiddenException(`Access denied: You need one of these roles: ${requiredRoles.join(', ')}`);
     }

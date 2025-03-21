@@ -36,24 +36,4 @@ export class User extends Base {
   userLogs: UserLog[];
 
 
-
-
-  // Hash password before updating
-  /*@BeforeUpdate()
-  async hashPasswordOnUpdate() {
-    // Only hash the password if it has been modified and isn't already hashed
-    /*if (this.password && !this.isPasswordHashed(this.password)) {
-      this.password = await bcrypt.hash(this.password, 10); // 10 refers to the salt rounds used by bcrypt
-    }*/
-  /*if (this.password && this.isPasswordHashed(this.password)) {
-    return; // If the password is already hashed, do nothing
-  }
- 
-  this.password = await bcrypt.hash(this.password, 10);
-}*/
-
-  // Helper method to check if a password is already hashed
-  /*public isPasswordHashed(password: string): boolean {
-    return password.startsWith('$2a$'); // bcrypt hashed passwords start with '$2a$'
-  }*/
 }

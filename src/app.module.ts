@@ -10,7 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MqttModule } from './services/mqtt.module';
 import { SystemAdminModule } from './admin/system-admin/system-admin.module';
 import { CompanyAdminModule } from './admin/company-admin/company-admin.module';
-import { ThrottlerModule } from '@nestjs/throttler'; // Import ThrottlerModule
+import { ThrottlerModule } from '@nestjs/throttler'; 
 import { MqttService } from './services/mqtt.service';
 
 dotenv.config();

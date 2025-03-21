@@ -30,7 +30,7 @@ export class LogService {
     }
 
     const logEntry = this.logRepository.create({
-      user,  // Assign user object, not just userId
+      user,  
       action,
     });
 

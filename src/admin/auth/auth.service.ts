@@ -30,16 +30,16 @@ export class AuthService {
   async login(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
     if (!user) {
-      console.error('User not found:', email);  // Debugging line
+      console.error('User not found:', email);  
       throw new Error('Invalid credentials');
     }
   
-    console.log('Password from request:', password);  // Debugging line
-    console.log('Hashed password from DB:', user.password);  // Debugging line
+    console.log('Password from request:', password);  
+    console.log('Hashed password from DB:', user.password);  
   
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      console.error('Password mismatch for:', email);  // Debugging line
+      console.error('Password mismatch for:', email);  
       throw new Error('Invalid credentials');
     }
   

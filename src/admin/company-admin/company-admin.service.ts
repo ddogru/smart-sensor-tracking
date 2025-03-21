@@ -38,10 +38,9 @@ export class CompanyAdminService {
     async createUser(createUserDto: CreateUserDto, companyAdminId: string) {
         const { name, email, password, roleName } = createUserDto;
 
-        // Find the Company Admin
         const companyAdmin = await this.userRepository.findOne({
             where: { id: companyAdminId },
-            relations: ['company'], // Fetch related company
+            relations: ['company'], 
         });
 
         if (!companyAdmin || !companyAdmin.company) {
@@ -50,16 +49,13 @@ export class CompanyAdminService {
 
         const company = companyAdmin.company;
 
-        // Find the role
         const role = await this.roleRepository.findOne({ where: { name: roleName } });
         if (!role) {
             throw new Error('Role not found');
         }
 
-        // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create and save the user
         const user = this.userRepository.create({
             name,
             email,
@@ -70,7 +66,6 @@ export class CompanyAdminService {
 
         const savedUser = await this.userRepository.save(user);
 
-        // Log the action (Company Admin creates a user)
         await this.logService.logUserAction(companyAdminId, `Created user ${name} (ID: ${savedUser.id}) in company ${companyAdmin.company.name}`);
 
         return savedUser;
@@ -80,7 +75,7 @@ export class CompanyAdminService {
 
         const companyAdmin = await this.userRepository.findOne({
             where: { id: companyAdminId },
-            relations: ['company'], // Fetch related company
+            relations: ['company'], 
         });
 
         if (!companyAdmin || !companyAdmin.company) {

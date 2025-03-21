@@ -86,7 +86,6 @@ export class SystemAdminService {
 
         const savedUser = await this.userRepository.save(user);
 
-        // Log the action
         await this.logService.logUserAction(systemAdminId, `System Admin created user ${name} (ID: ${savedUser.id})`);
 
         return savedUser;

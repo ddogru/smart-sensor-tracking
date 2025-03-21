@@ -33,7 +33,6 @@ export class MqttService implements OnModuleInit {
     
     this.mqttClient = mqtt.connect('mqtts://localhost:8883', options);
 
-    // subscribe to the topic(s)
     this.mqttClient.subscribe('sensor/#', (err) => {
       if (err) {
         console.error('Failed to subscribe to topic:', err);
@@ -42,7 +41,6 @@ export class MqttService implements OnModuleInit {
       }
     });
 
-    // listen for incoming messages
     this.mqttClient.on('message', (topic, message) => {
       console.log('Received message on topic:', topic);
       const payload = JSON.parse(message.toString());
@@ -72,13 +70,12 @@ export class MqttService implements OnModuleInit {
         'Validation error'
       );
 
-      return; // if invalid dont do anything
+      return; 
     }
 
     this.saveSensorData(sensorDataDto);
   }
 
-  // save sensor data to db
   async saveSensorData(sensorDataDto: SensorDataDto) {
 
     const sensorData = new SensorData();
@@ -86,7 +83,7 @@ export class MqttService implements OnModuleInit {
     sensorData.sensor = new Sensor();
     sensorData.sensor.id = sensorDataDto.sensor_id;
 
-    const timestamp = new Date(sensorDataDto.timestamp * 1000); //milliseconds
+    const timestamp = new Date(sensorDataDto.timestamp * 1000); 
 
     sensorData.timestamp = timestamp;
 
